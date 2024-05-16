@@ -11,10 +11,10 @@
         <ul class="list-unstyled">
                 <li class="active"><a href="{{url('home_home')}}"> <i class="icon-home"></i>Home </a></li>
                 <li><a href="{{url('view_category')}}"> <i class="icon-grid"></i>Category </a></li>
-                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Books</a>
+                <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Products</a>
                   <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
-                    <li><a href="add_book">Add Books</a></li>
-                    <li><a href="{{url('show_book')}}">Show Books</a></li>
+                    <li><a href="add_product">Add Product</a></li>
+                    <li><a href="{{url('view_product')}}">View Product</a></li>
                    
                   </ul>
                 </li>
