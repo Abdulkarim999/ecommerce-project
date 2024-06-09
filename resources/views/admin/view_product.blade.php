@@ -2,6 +2,14 @@
 <html>
   <head> 
    @include('admin.css')
+   <style>
+	.deg{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 60px;
+	}
+   </style>
   </head>
   <body>
     @include('admin.header')
@@ -24,34 +32,40 @@
     <tr>
       <th scope="col">Product title</th>
       <th scope="col">Description</th>
-	  <th scope="col">price</th>
+	  <th scope="col">Price</th>
       <th scope="col">Category</th>
       <th scope="col">Quantity </th>
 	  <th scope="col">Image </th>
-	  
-
-	 
+	  <th scope="col">Delete </th>
     </tr>
   </thead>
   <tbody>
 	@foreach($product as $products)
     <tr>
       <td>{{$products->title}}</td>
-	  <td>{{$products->description}}</td>
+	  <td>{!!Str::limit($products->description,50)!!}</td>
 	  <td>{{$products->price}}</td>
 	  <td>{{$products->category}}</td>
-	   <td>{{$products->quantity}}</td>
-	  
+	  <td>{{$products->quantity}}</td>
 	  <td>
-		<img height="200" src="product/{{$products->image}}" alt="">
+		<img height="100" src="products/{{$products->image}}" alt="">
 	  </td>
-      
+	  <td>
+	    <a class="btn btn-danger" href="{{url('delete_product',$products->id)}}">Delete</a>
+	  </td>
     </tr>
 	@endforeach
   </tbody>
   
 </table>
 
+
+<div class="deg">
+ {{$product ->links()}}
+
+</div>
+
+    
 		  </div>
 		   </div>
 		   </div>

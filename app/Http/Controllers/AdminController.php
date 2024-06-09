@@ -62,7 +62,7 @@ public function upload_product(Request $request){
 		}
 
 	$data->save();
-	toastr()->success('Product Updated Successfully.');
+	toastr()->success('Product Added Successfully.');
 	return redirect()->back();
 
 
@@ -70,7 +70,17 @@ public function upload_product(Request $request){
 }
 
 public function view_product(){
-	$product = Product::all();
+	$product = Product::paginate(3);
 	return view('admin.view_product',compact('product'));
 }
+
+ public function delete_product($id){
+	$data = Product::find($id);
+	$data->delete();
+    
+    sweetalert()->error('Are you sure to Delete this.');
+	
+	return redirect()->back();
+
+   }
 }
