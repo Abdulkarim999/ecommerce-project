@@ -34,7 +34,7 @@
 
 		  <div class="col-12 col-sm-6 py-2 ">
 		    <label for="">Category</label>
-			<select name="category" id="" required>
+			<select name="category" id="" required> 
 				<option value="">Select a Category</option>
 				@foreach($category as $category)
 				<option value="{{$category->category_name}}">{{$category->category_name}}</option>
