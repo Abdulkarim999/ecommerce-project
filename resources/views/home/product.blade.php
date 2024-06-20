@@ -24,7 +24,7 @@
                 </h6>
               </div>
 
-              <div style="padding: 15px;">
+              <div style="display:inline; margin-top: 5px; margin-right:10px;">
                 <a class="btn btn-danger" href="{{url('product_details',$products->id)}}">Details</a>
               </div>
 

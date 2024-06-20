@@ -9,7 +9,7 @@
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
-                <li class="active"><a href="{{url('home_home')}}"> <i class="icon-home"></i>Home </a></li>
+                <li ><a href="{{url('admin/dashboard')}}"> <i class="icon-home"></i>Home </a></li>
                 <li><a href="{{url('view_category')}}"> <i class="icon-grid"></i>Category </a></li>
                 <li><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>Products</a>
                   <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
@@ -18,7 +18,7 @@
                    
                   </ul>
                 </li>
-                <li><a href="{{url('borrow_request')}}"> <i class="icon-logout"></i>Borrow Book  </a></li>
+                <li><a href="{{url('view_order')}}"> <i class="icon-logout"></i>Order</a></li>
         </ul>
 		
       </nav>

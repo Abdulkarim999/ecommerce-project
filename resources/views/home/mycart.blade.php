@@ -8,14 +8,22 @@
            margin-bottom: 70px;
            padding: 18px; 
         }
+        .order_deg{
+          padding-left: 100px;
+          margin-top: 20px;
+        }
     </style>
   @include('home.css')
 </head>
 <body>
   <div class="hero_area">
    @include('home.header')
-  
-   <table  class="table table-bordered">
+   
+   
+   <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+      <table  class="table table-bordered" style="margin-top: 20px;">
   <thead>
     <tr>
       
@@ -59,6 +67,44 @@
 <div class="cart_value">
     <h3>Total Value of Cart is : ${{$value}} </h3>
 </div>
+</div>
+    
+
+ <div class="col-md-4">
+ <div class="order_deg">
+    <form action="{{url('confirm_order')}}" method="post">
+      @csrf
+      <div>
+        <label for="">Receiver Name</label>
+        <input type="text" name="name" value="{{Auth::user()->name}}">
+      </div>
+
+      <div>
+        <label for="">Receiver Address</label>
+        <textarea name="address" id="">{{Auth::user()->address}}</textarea>
+      </div>
+      <div>
+        <label for="">Receiver Phone</label>
+        <input type="number" name="phone" value="{{Auth::user()->phone}}">
+      </div>
+      <div>
+        <div style="margin-top: 10px;">
+          <input class="btn btn-primary" type="submit" value="Place Order">
+        </div>
+    </form>
+   </div>
+
+
+ </div>
+       
+      
+    
+  
+
+      
+   </div>
+   </div>
+   
 @include('home.footer')
 
 </body>

@@ -7,11 +7,15 @@ use App\Models\Product;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\cart;
-
+use App\Models\Order;
 class HomeController extends Controller
 {
     public function index(){
-		return view('admin.index');
+		$user = User::where('usertype','user')->get()->count();
+		$product = Product::all()->count();
+		$order = Order::all()->count();
+		$delivered = Order::where('status','Delivered')->get()->count();
+		return view('admin.index',compact('user','product','order','delivered'));
 	}
 
 	public function home(){
@@ -85,6 +89,43 @@ class HomeController extends Controller
 		sweetalert()->error('Are you sure to Delete this.');
 		return redirect()->back();
 
+	}
+
+	public function confirm_order(Request $request){
+		$name = $request->name;
+		$address = $request->address;
+		$phone = $request->phone;
+		$userid = Auth::user()->id;
+		$cart = cart::where('user_id',$userid)->get();
+
+		foreach($cart as $carts){
+			$order = new Order;
+			$order->name = $name;
+			$order->rec_address = $address;
+			$order->phone = $phone;
+			$order->user_id = $userid;
+			$order->product_id = $carts->product_id;
+			$order->save();
+			
+		}
+
+		$cart_remove = cart::where('user_id',$userid)->get();
+
+		foreach($cart_remove as $remove){
+			$data = cart::find($remove->id);
+			$data->delete();
+		}
+		toastr()->success('Product Orded Successfully.');
+		return redirect()->back(); 
+
+	}
+
+	public function myorders(){
+		$user = Auth::user()->id;
+		$count = Cart::where('user_id',$user)->get()->count();
+		$order = Order::where('user_id',$user)->get();
+
+		return view('home.order',compact('count','order'));
 	}
 
 
