@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
+use Twilio\Rest\Client;
+
 
 class LoginRequest extends FormRequest
 {
@@ -48,6 +51,35 @@ class LoginRequest extends FormRequest
                 'email' => trans('auth.failed'),
             ]);
         }
+
+		$user = User::where('email',$this->input(key:'email'))->first();
+		$user->generateCode();
+
+		
+
+		//send mail
+		//$user->notify(new TwoFactorCode());
+
+		//send mobile
+$message = "Login OTP is " . $user->code;
+$account_sid = getenv("TWILIO_SID");
+$auth_token = getenv("TWILIO_TOKEN");
+$twilio_number = getenv("TWILIO_FROM");
+
+// Check if user is admin
+if ($user->usertype !== 'admin') {
+    // Only send OTP if user is not admin
+    $client = new Client($account_sid, $auth_token);
+    $client->messages->create(
+        $user->phone,
+        [
+            'from' => $twilio_number,
+            'body' => $message
+        ]
+    );
+}
+
+
 
         RateLimiter::clear($this->throttleKey());
     }

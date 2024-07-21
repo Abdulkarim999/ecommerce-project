@@ -10,7 +10,11 @@
         }
         .order_deg{
           padding-left: 100px;
-          margin-top: 20px;
+          padding-bottom: 10px;
+		  align-items: center;
+		  justify-content: center;
+		  text-align: center;
+		  display: flex;
         }
     </style>
   @include('home.css')
@@ -22,7 +26,7 @@
    
    <div class="container">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-12">
       <table  class="table table-bordered" style="margin-top: 20px;">
   <thead>
     <tr>
@@ -67,10 +71,7 @@
 <div class="cart_value">
     <h3>Total Value of Cart is : ${{$value}} </h3>
 </div>
-</div>
-    
-
- <div class="col-md-4">
+<div class="col-md-12">
  <div class="order_deg">
     <form action="{{url('confirm_order')}}" method="post">
       @csrf
@@ -89,10 +90,15 @@
       </div>
       <div>
         <div style="margin-top: 10px;">
-          <input class="btn btn-primary" type="submit" value="Place Order">
+          <input class="btn btn-primary" type="submit" value="Cash on Delivery">
+		  <a  class="btn btn-success" href="{{url('stripe',$value)}}">Pay using card</a>
         </div>
     </form>
    </div>
+</div>
+    
+
+ 
 
 
  </div>

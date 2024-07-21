@@ -76,23 +76,29 @@ public function view_product(){
 	return view('admin.view_product',compact('product'));
 }
 
- public function delete_product($id){
-	$data = Product::find($id);
-	$image_path = public_path('products/'.$data->image);
+ public function delete_product($id)
+{
+    $product = Product::find($id);
 
-	if(file_exists($image_path))
-	{
-		unlink($image_path);
-	}
+    if (!$product) {
+        return redirect()->back()->withErrors(['Product not found.']);
+    }
 
-	
-	$data->delete();
-    
-    
-	
-	return redirect()->back();
+    // Delete related orders first
+    Order::where('product_id', $id)->delete();
 
-   }
+    // Delete the product image file if it exists
+    $image_path = public_path('products/' . $product->image);
+    if (file_exists($image_path)) {
+        unlink($image_path);
+    }
+
+    // Delete the product
+    $product->delete();
+
+    return redirect()->back();
+}
+
 
    public function update_product($id){
 	$data = Product::find($id);
@@ -158,4 +164,7 @@ public function print_pdf($id){
 
 }
 
+public function manage_user(){
+	return view('admin.manage_user');
+}
 }

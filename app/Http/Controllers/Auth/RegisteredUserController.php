@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Twilio\Rest\Client;
+use Illuminate\Http\JsonResponse;
 
 class RegisteredUserController extends Controller
 {
@@ -33,15 +37,22 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+			'phone' => 'required|string|max:15', // Add validation for the phone number
         ]);
 
+		 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
 			'phone' => $request->phone,
 			'address' => $request->address,
             'password' => Hash::make($request->password),
+			
         ]);
+
+		
+
+        return redirect()->route('login')->with('status', 'You have registered successfully. Login to Receive OTP in your phone.');
 
         event(new Registered($user));
 

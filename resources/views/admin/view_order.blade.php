@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
   <head> 
 	<base href="/public">
@@ -25,9 +25,10 @@
       <th scope="col">Product title</th>
       <th scope="col">Price</th>
       <th scope="col">Image</th>
+	  <th scope="col">Payment Status</th>
       <th scope="col">Status</th>
       <th scope="col">Change Status</th>
-      <th scope="col">Print PDF </th>
+      
     </tr>
 
     @foreach($data as $data)
@@ -44,6 +45,8 @@
       <td>
         <img width="100" src="products/{{$data->product->image}}" alt="">
       </td>
+
+	  <td>{{$data->payment_status}}</td>
       <td>
         @if($data->status == 'in progress')
 
@@ -62,9 +65,7 @@
         <a class="btn btn-danger"  href="{{url('on_the_way',$data->id)}}">On the way</a>
         <a class="btn btn-success"  href="{{url('delivered',$data->id)}}">Delivered</a>
       </td>
-      <td>
-        <a class="btn btn-secondary" href="{{url('print_pdf',$data->id)}}">Print Pdf</a>
-      </td>
+      
       
       
 

@@ -8,9 +8,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Models\cart;
 use App\Models\Order;
+use Stripe;
+use Session;
 class HomeController extends Controller
 {
     public function index(){
+		
 		$user = User::where('usertype','user')->get()->count();
 		$product = Product::all()->count();
 		$order = Order::all()->count();
@@ -128,5 +131,104 @@ class HomeController extends Controller
 		return view('home.order',compact('count','order'));
 	}
 
+	 public function stripe($value)
+    {
+        return view('home.stripe',compact('value'));
+    }
 
+	 public function stripePost(Request $request,$value)
+    {
+        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+    
+        Stripe\Charge::create ([
+                "amount" => $value * 100,
+                "currency" => "usd",
+                "source" => $request->stripeToken,
+                "description" => "Test payment from itsolutionstuff.com." 
+        ]);
+
+		$name = Auth::user()->name;
+		$phone = Auth::user()->phone;
+		$address = Auth::user()->address;
+		$userid = Auth::user()->id;
+		$cart = cart::where('user_id',$userid)->get();
+
+		foreach($cart as $carts){
+			$order = new Order;
+			$order->name = $name;
+			$order->rec_address = $address;
+			$order->phone = $phone;
+			$order->user_id = $userid;
+			$order->product_id = $carts->product_id;
+			$order->payment_status = "paid";
+			$order->save();
+			$cart_remove = cart::where('user_id',$userid)->get();
+
+		foreach($cart_remove as $remove){
+			$data = cart::find($remove->id);
+			$data->delete();
+		}
+		toastr()->success('Payment made Successfully.');
+		return redirect('mycard'); 
+    }
 }
+
+public function shop(){
+		$product = Product::all();
+		if(Auth::id())
+		{
+		$user = Auth::user();
+		$userid = $user->id;
+		$count = cart::where('user_id', $userid)->count();
+		}
+		else{
+			$count = '';
+		}
+		return view('home.shop',compact('product','count'));
+	}
+
+	public function why(){
+		
+		if(Auth::id())
+		{
+		$user = Auth::user();
+		$userid = $user->id;
+		$count = cart::where('user_id', $userid)->count();
+		}
+		else{
+			$count = '';
+		}
+		return view('home.why',compact('count'));
+	}
+
+	public function contacts(){
+		
+		if(Auth::id())
+		{
+		$user = Auth::user();
+		$userid = $user->id;
+		$count = cart::where('user_id', $userid)->count();
+		}
+		else{
+			$count = '';
+		}
+		return view('home.contacts',compact('count'));
+	}
+
+	public function testmonial(){
+		
+		if(Auth::id())
+		{
+		$user = Auth::user();
+		$userid = $user->id;
+		$count = cart::where('user_id', $userid)->count();
+		}
+		else{
+			$count = '';
+		}
+		return view('home.testmonial',compact('count'));
+	}
+}
+
+
+

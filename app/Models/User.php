@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+//use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements MustVerifyEmail
-{
-    use HasFactory, Notifiable;
 
+class User extends Authenticatable {
+	
+    use HasFactory, Notifiable;
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
 		'phone',
 		'address',
         'password',
+		'code',
+		'expire_at'
+		
     ];
 
     /**
@@ -45,4 +49,18 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+	public function generateCode(){
+		$this->timestamps = false;
+		$this->code = rand(1000,9999);
+		$this->expire_at = now()->addMinute(15);
+		$this->save();
+	}
+
+	public function restCode(){
+		$this->timestamps = false;
+		$this->code = null;
+		$this->expire_at = null;
+		$this->save();
+	}
 }
